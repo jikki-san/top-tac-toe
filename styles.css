@@ -4,15 +4,23 @@
   box-sizing: border-box;
 }
 
-nav {
-  border-bottom: 4px solid blueviolet;
+:root {
+  --light-1: rgb(255, 255, 255);
+  --light-2: rgb(229, 229, 229);
+  --teal: rgb(44, 165, 184);
+  --magenta: rgb(171, 92, 149);
+  --purple: rgb(52, 73, 130);
+}
 
-  background-color: darkcyan;
+nav {
+  border-bottom: 4px solid var(--magenta);
+
+  background-color: var(--teal);
 
   h1 {
     margin: 0 auto;
     padding: 12px;
 
-    color: beige;
+    color: var(--light-2);
   }
 }
