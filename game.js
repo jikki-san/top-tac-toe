@@ -1,6 +1,3 @@
-console.log("Let's play Tic-Tac-Toe!");
-console.log("Creating game board for 3x3:");
-
 const GameBoard = (function (dimension) {
   const board = [];
   for (let i = 0; i < dimension; i++) {
@@ -77,6 +74,10 @@ const GameBoard = (function (dimension) {
   const checkWinConditions = () =>
     checkRows() || checkCols() || checkDiagonals();
 
+  const checkTie = () => {
+    return board.flat().every((boardElement) => boardElement !== " ");
+  };
+
   const mark = (symbol, row, col) => {
     console.log(`Marking (${row}, ${col}) as '${symbol}'`);
     board[row][col] = symbol;
@@ -109,6 +110,7 @@ const GameBoard = (function (dimension) {
 
   return {
     checkWinConditions,
+    checkTie,
     mark,
     print,
   };
@@ -118,14 +120,33 @@ const Game = (function () {
   const makeMove = (symbol, row, col) => {
     GameBoard.mark(symbol, row, col);
     GameBoard.print();
-
-    if (GameBoard.checkWinConditions()) {
-      console.log(`'${symbol}' wins!`);
-    }
   };
 
-  return { makeMove };
-})();
+  const play = () => {
+    const symbols = ["X", "O"];
+    let turnIndex = 0;
+    let gameOver = false;
 
-GameBoard.print();
-console.log("Make your move!");
+    while (!gameOver) {
+      const symbol = symbols[turnIndex];
+      console.log(`It's ${symbol}'s turn!`);
+      const coordinate = prompt("Coordinates of your next move:");
+      const [row, col] = coordinate.split(",");
+      makeMove(symbol, parseInt(row), parseInt(col));
+
+      if (GameBoard.checkWinConditions()) {
+        console.log(`'${symbol}' wins!`);
+        gameOver = true;
+      } else if (GameBoard.checkTie()) {
+        console.log("Enola's game!");
+        gameOver = true;
+      }
+
+      turnIndex = (turnIndex + 1) % symbols.length;
+    }
+
+    // const input = prompt("Game over! Reset?");
+  };
+
+  return { makeMove, play };
+})();
